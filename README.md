@@ -91,3 +91,30 @@ let hello =
 
 ```
 
+## make get endpoint with json response
+
+In `Serbet.jsonEndpoint` need the `body_in_decode` and `body_out_encode`, so you need use `Serbet.endpoint` to response to get endpoint with json,
+and add manual decoded to json, sample:
+
+```ocaml
+open Async;
+open Serbet.Endpoint;
+
+[@decco]
+type body_out = {message: string};
+
+let endpoint =
+  Serbet.endpoint({
+    verb: GET,
+    path: "/",
+    handler: (_req) => {
+      let response = {message: "Bom dia" }
+      response 
+        -> body_out_encode
+        -> OkJson 
+        -> async;
+    },
+  });
+```
+
+
